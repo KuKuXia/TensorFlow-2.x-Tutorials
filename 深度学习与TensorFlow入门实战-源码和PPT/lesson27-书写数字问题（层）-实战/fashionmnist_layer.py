@@ -1,10 +1,11 @@
+import  os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import tensorflow as tf
 from    tensorflow import keras
 from    tensorflow.keras import datasets, layers, optimizers, Sequential, metrics
 
-import  os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+assert tf.__version__.startswith('2.')
 
 def preprocess(x, y):
 
@@ -15,6 +16,7 @@ def preprocess(x, y):
 
 (x, y), (x_test, y_test) = datasets.fashion_mnist.load_data()
 print(x.shape, y.shape)
+
 
 batchsz = 128
 

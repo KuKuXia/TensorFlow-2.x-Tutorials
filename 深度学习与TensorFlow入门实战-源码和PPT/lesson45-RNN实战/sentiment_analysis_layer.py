@@ -1,4 +1,6 @@
 import  os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
 import  tensorflow as tf
 import  numpy as np
 from    tensorflow import keras
@@ -6,8 +8,7 @@ from    tensorflow.keras import layers
 
 
 tf.random.set_seed(22)
-np.random.seed(22)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+np.random.seed(22) 
 assert tf.__version__.startswith('2.')
 
 batchsz = 128
@@ -66,7 +67,7 @@ class MyRNN(keras.Model):
         x = self.embedding(x)
         # rnn cell compute
         # x: [b, 80, 100] => [b, 64]
-        x = self.rnn(x)
+        x = self.rnn(x,training=training)
 
         # out: [b, 64] => [b, 1]
         x = self.outlayer(x)
@@ -80,6 +81,8 @@ def main():
     epochs = 4
 
     model = MyRNN(units)
+    # model.build(input_shape=(4,80))
+    # model.summary()
     model.compile(optimizer = keras.optimizers.Adam(0.001),
                   loss = tf.losses.BinaryCrossentropy(),
                   metrics=['accuracy'])

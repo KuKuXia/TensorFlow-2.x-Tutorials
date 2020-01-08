@@ -1,9 +1,10 @@
-import  tensorflow as tf
-from    tensorflow.keras import layers, optimizers, datasets, Sequential
 import  os
-from    resnet import resnet18
-
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+import  tensorflow as tf
+from    tensorflow.keras import layers, optimizers, datasets, Sequential 
+from    resnet import resnet18 
+
 tf.random.set_seed(2345)
 
 
@@ -48,7 +49,7 @@ def main():
 
             with tf.GradientTape() as tape:
                 # [b, 32, 32, 3] => [b, 100]
-                logits = model(x)
+                logits = model(x,training=True)
                 # [b] => [b, 100]
                 y_onehot = tf.one_hot(y, depth=100)
                 # compute loss
@@ -67,7 +68,7 @@ def main():
         total_correct = 0
         for x,y in test_db:
 
-            logits = model(x)
+            logits = model(x,training=False)
             prob = tf.nn.softmax(logits, axis=1)
             pred = tf.argmax(prob, axis=1)
             pred = tf.cast(pred, dtype=tf.int32)

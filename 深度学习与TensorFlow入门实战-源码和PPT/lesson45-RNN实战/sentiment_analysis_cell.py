@@ -1,4 +1,6 @@
 import  os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
 import  tensorflow as tf
 import  numpy as np
 from    tensorflow import keras
@@ -6,8 +8,7 @@ from    tensorflow.keras import layers
 
 
 tf.random.set_seed(22)
-np.random.seed(22)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+np.random.seed(22) 
 assert tf.__version__.startswith('2.')
 
 batchsz = 128
@@ -92,7 +93,7 @@ def main():
     model = MyRNN(units)
     model.compile(optimizer = keras.optimizers.Adam(0.001),
                   loss = tf.losses.BinaryCrossentropy(),
-                  metrics=['accuracy'])
+                  metrics=['accuracy'],experimental_run_tf_function=False)
     model.fit(db_train, epochs=epochs, validation_data=db_test)
 
     model.evaluate(db_test)
